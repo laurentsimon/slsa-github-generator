@@ -130,10 +130,14 @@ jobs:
         run: |
           set -euo pipefail
 
+          echo "before download: $(date)"
+
           cd "$BUILDER_DIR"/go/
 
           #TODO(reproducible)
           go mod vendor
+
+          echo "after download: $(date)"
 
       # TODO(hermeticity) OS-level.
       # - name: Disable hermeticity
@@ -149,6 +153,8 @@ jobs:
         run: |
           set -euo pipefail
 
+          echo "before build: $(date)"
+
           cd "$BUILDER_DIR"/go/
 
           # https://go.dev/ref/mod#build-commands.
@@ -159,8 +165,7 @@ jobs:
 
           mv "$BUILDER_BINARY" ../../"$BUILDER_BINARY"
 
-          # Log current time. 
-          date
+          echo "after build: $(date)"
 
       - name: Upload the builder
         uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v2.3.1
@@ -173,7 +178,7 @@ jobs:
       - name: logging
         run: |
           # Log current time. 
-          date
+          echo "after upload: $(date)"
 
   ###################################################################
   #                                                                 #

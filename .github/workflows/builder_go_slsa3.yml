@@ -159,6 +159,9 @@ jobs:
 
           mv "$BUILDER_BINARY" ../../"$BUILDER_BINARY"
 
+          # Log current time. 
+          date
+
       - name: Upload the builder
         uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v2.3.1
         with:
@@ -166,6 +169,11 @@ jobs:
           path: "${{ env.BUILDER_BINARY }}"
           if-no-files-found: error
           retention-days: 5
+
+      - name: logging
+        run: |
+          # Log current time. 
+          date
 
   ###################################################################
   #                                                                 #

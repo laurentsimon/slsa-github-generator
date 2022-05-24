@@ -158,7 +158,6 @@ jobs:
 
             # https://go.dev/ref/mod#build-commands.
             go build -mod=vendor -o "$BUILDER_BINARY"
-
             mv "$BUILDER_BINARY" ../../"$BUILDER_BINARY"
 
             cd -

@@ -11,51 +11,52 @@ set -euo pipefail
 #VERIFIER_RELEASE_BINARY="slsa-verifier-linux-amd64"
 #VERIFIER_RELEASE_BINARY_SHA256="89fbcba9aed67d5146ea99946c7e4e5a80e3767871f0e3ffcd0b582134efd010"
 
-PREFIX="refs/tags/"
+# PREFIX="refs/tags/"
 
-# Extract version.
-if [[ "$BUILDER_REF" =~ "^$PREFIX*" ]]; then
-    echo "Invalid ref: $BUILDER_REF"
-    exit 2
-fi
+# # Extract version.
+# if [[ "$BUILDER_REF" =~ "^$PREFIX*" ]]; then
+#     echo "Invalid ref: $BUILDER_REF"
+#     exit 2
+# fi
 
-BUILDER_TAG="${BUILDER_REF#"$PREFIX"}"
+# BUILDER_TAG="${BUILDER_REF#"$PREFIX"}"
 
-if [[ "$BUILDER_TAG" = "$(echo -n "$BUILDER_TAG" | grep -P '^[a-f\d]{40}$')" ]]; then
-    echo "Builder referenced by hash: $BUILDER_TAG"
-    echo "Resolving..."
+# if [[ "$BUILDER_TAG" = "$(echo -n "$BUILDER_TAG" | grep -P '^[a-f\d]{40}$')" ]]; then
+#     echo "Builder referenced by hash: $BUILDER_TAG"
+#     echo "Resolving..."
     
-    RELEASE_TAG=""
+#     RELEASE_TAG=""
 
-    # List the releases and find the corepsonding hash.
-    RELEASE_LIST=$(gh release -R "$BUILDER_REPOSITORY" -L 50 list)
-    while read line; do
-        TAG=$(echo "$line" | cut -f1)
-        BRANCH=$(gh release -R "$BUILDER_REPOSITORY" view "$TAG" --json targetCommitish --jq '.targetCommitish')
-        if [[ "$BRANCH" != "main" ]]; then
-            continue
-        fi
-        COMMIT=$(gh api /repos/"$BUILDER_REPOSITORY"/git/ref/tags/"$TAG" | jq -r '.object.sha')
-        if [[ "$COMMIT" == "$BUILDER_TAG" ]]; then
-            RELEASE_TAG="$TAG"
-            echo "Found tag $BUILDER_TAG match at tag $TAG and commit $COMMIT"
-            break
-        fi
-    done <<< "$RELEASE_LIST"
+#     # List the releases and find the corepsonding hash.
+#     RELEASE_LIST=$(gh release -R "$BUILDER_REPOSITORY" -L 50 list)
+#     while read line; do
+#         TAG=$(echo "$line" | cut -f1)
+#         BRANCH=$(gh release -R "$BUILDER_REPOSITORY" view "$TAG" --json targetCommitish --jq '.targetCommitish')
+#         if [[ "$BRANCH" != "main" ]]; then
+#             continue
+#         fi
+#         COMMIT=$(gh api /repos/"$BUILDER_REPOSITORY"/git/ref/tags/"$TAG" | jq -r '.object.sha')
+#         if [[ "$COMMIT" == "$BUILDER_TAG" ]]; then
+#             RELEASE_TAG="$TAG"
+#             echo "Found tag $BUILDER_TAG match at tag $TAG and commit $COMMIT"
+#             break
+#         fi
+#     done <<< "$RELEASE_LIST"
 
-    if [[ -z "$RELEASE_TAG" ]]; then 
-        echo "Tag not found for $BUILDER_TAG"
-        exit 3
-    fi
+#     if [[ -z "$RELEASE_TAG" ]]; then 
+#         echo "Tag not found for $BUILDER_TAG"
+#         exit 3
+#     fi
 
-    BUILDER_TAG="$RELEASE_TAG"
-fi
+#     BUILDER_TAG="$RELEASE_TAG"
+# fi
 
-if [[ "$BUILDER_TAG" != "$(echo -n "$BUILDER_TAG" | grep -P '^v\d*(\.([\d]{1,})){0,2}$')" ]]; then
-    echo "Invalid ref: $BUILDER_TAG"
-    exit 7
-fi
+# if [[ "$BUILDER_TAG" != "$(echo -n "$BUILDER_TAG" | grep -P '^v\d*(\.([\d]{1,})){0,2}$')" ]]; then
+#     echo "Invalid ref: $BUILDER_TAG"
+#     exit 7
+# fi
 
+BUILDER_TAG="v0.0.2"
 echo "Builder version: $BUILDER_TAG"
 
 echo "BUILDER_REPOSITORY: $BUILDER_REPOSITORY"

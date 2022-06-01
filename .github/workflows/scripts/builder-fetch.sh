@@ -71,6 +71,7 @@ echo "verifier hash computed is $COMPUTED_HASH"
 echo "$VERIFIER_RELEASE_BINARY_SHA256 $VERIFIER_RELEASE_BINARY" | sha256sum --strict --check --status || exit 4
 echo "verifier hash verification has passed"
 
+export DEBUG=1
 # Verify the provenance of the builder.
 chmod a+x "$VERIFIER_RELEASE_BINARY"
 ./"$VERIFIER_RELEASE_BINARY" --branch "main" \

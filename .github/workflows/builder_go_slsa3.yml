@@ -437,7 +437,8 @@ jobs:
           set -euo pipefail
 
           echo "provenance generator is $BUILDER_BINARY"
-
+          export DEBUG=1
+          
           # Create and sign provenance
           # This sets signed-provenance-name to the name of the signed DSSE envelope.
           ./"$BUILDER_BINARY" provenance \

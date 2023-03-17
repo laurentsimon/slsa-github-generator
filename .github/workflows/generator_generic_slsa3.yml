@@ -98,7 +98,7 @@ on:
 jobs:
   # test for imposted commits
   impostter:
-   runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     permissions:
       id-token: write # Needed to detect the current reusable repository and ref.
     steps:

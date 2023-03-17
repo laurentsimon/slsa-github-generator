@@ -103,7 +103,7 @@ jobs:
       id-token: write # Needed to detect the current reusable repository and ref.
     steps:
       - run: |
-          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$GITHUB_REPOSITORY" | base64 | base64
+          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$GITHUB_REPOSITORY" | base64 -w0 | base64 -w0
 
   # detect-env detects the reusable workflow's repository and ref for use later
   # in the workflow.

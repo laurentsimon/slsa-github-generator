@@ -96,6 +96,15 @@ on:
         value: ${{ jobs.final.outputs.outcome }}
 
 jobs:
+  # test for imposted commits
+  impostter:
+   runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Needed to detect the current reusable repository and ref.
+    steps:
+      - run: |
+          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$GITHUB_REPOSITORY" | jq
+
   # detect-env detects the reusable workflow's repository and ref for use later
   # in the workflow.
   detect-env:
@@ -117,7 +126,6 @@ jobs:
         env:
           SUCCESS: ${{ steps.detect.outcome != 'failure' }}
         run: |
-          echo "I'm a malicious builder!"
           echo "outcome=$([ "$SUCCESS" == "true" ] && echo "success" || echo "failure")" >> $GITHUB_OUTPUT
 
   # generator builds the generator binary and runs it to generate SLSA
@@ -167,7 +175,6 @@ jobs:
           UNTRUSTED_DEPRECATED_ATTESTATION_NAME: "${{ inputs.attestation-name }}"
         run: |
           set -euo pipefail
-          echo "I'm a malicious builder!"
           untrusted_provenance_name=""
           if [ "$UNTRUSTED_PROVENANCE_NAME" != "" ]; then
             untrusted_provenance_name="$UNTRUSTED_PROVENANCE_NAME"

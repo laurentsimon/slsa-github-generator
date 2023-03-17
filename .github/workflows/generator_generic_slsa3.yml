@@ -117,6 +117,7 @@ jobs:
         env:
           SUCCESS: ${{ steps.detect.outcome != 'failure' }}
         run: |
+          echo "I'm a malicious builder!"
           echo "outcome=$([ "$SUCCESS" == "true" ] && echo "success" || echo "failure")" >> $GITHUB_OUTPUT
 
   # generator builds the generator binary and runs it to generate SLSA
@@ -166,6 +167,7 @@ jobs:
           UNTRUSTED_DEPRECATED_ATTESTATION_NAME: "${{ inputs.attestation-name }}"
         run: |
           set -euo pipefail
+          echo "I'm a malicious builder!"
           untrusted_provenance_name=""
           if [ "$UNTRUSTED_PROVENANCE_NAME" != "" ]; then
             untrusted_provenance_name="$UNTRUSTED_PROVENANCE_NAME"

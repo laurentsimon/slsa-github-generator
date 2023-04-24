@@ -18,7 +18,7 @@ runs:
     - name: Checkout the repository
       uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
       with:
-        fetch-depth: 1
+        fetch-depth: 0
         # Different from default actions/checkout which defaults to `true`.
         persist-credentials: false
         token: ${{ inputs.token }}

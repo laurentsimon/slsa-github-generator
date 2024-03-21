@@ -144,7 +144,7 @@ jobs:
       - name: Generate builder
         id: generate-builder
         continue-on-error: true
-        uses: slsa-framework/slsa-github-generator/.github/actions/generate-builder@v1.10.0-rc.0
+        uses: laurentsimon/slsa-github-generator/.github/actions/generate-builder@v1.10.0-rc.0
         with:
           repository: "${{ needs.detect-env.outputs.repository }}"
           ref: "${{ needs.detect-env.outputs.ref }}"
@@ -154,6 +154,7 @@ jobs:
           # NOTE: We are using the generic generator.
           directory: "${{ env.BUILDER_DIR }}"
           allow-private-repository: ${{ inputs.private-repository }}
+          testing: true
 
       - id: auth
         name: Authenticate to Google Cloud
